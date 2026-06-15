@@ -14,6 +14,7 @@ The project is a simple macro tracking app called MacroZone that allows users to
 
 ### 🚀 Project Setup
 
+0. [Original Source ](#https://github.com/bradtraversy/macrozone)
 1. [Create An Expo Account & Install The EAS CLI](#1-create-an-expo-account--install-the-eas-cli)
 2. [Create React Native App](#2-create-react-native-app)
 3. [Initialize The EAS Project](#3-initialize-the-eas-project)
