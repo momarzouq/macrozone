@@ -1,0 +1,81 @@
+import { deleteMeal } from "@/storage/meals";
+import { colors } from "@/styles/global";
+import * as Haptics from "expo-haptics";
+import React, { useState } from "react";
+import { StyleSheet, Text, TouchableOpacity } from "react-native";
+import DeleteMealModal from "./DeleteMealModal";
+
+type MealItemProps = {
+  id: string;
+  name: string;
+  calories: number;
+  protein: number;
+  carbs: number;
+  fat: number;
+  onDelete: () => void;
+};
+
+export default function MealItem({
+  id,
+  name,
+  calories,
+  protein,
+  carbs,
+  fat,
+  onDelete,
+}: MealItemProps) {
+  const [showModal, setShowModal] = useState(false);
+  const handleLongPress = () => {
+    // Alert.alert("Delete Meal", `Are you sure you want to delete "${name}"?`, [
+    //   { text: "Cancel", style: "cancel" },
+    //   {
+    //     text: "Delete",
+    //     style: "destructive",
+    //     onPress: async () => {
+    //       await deleteMeal(id);
+    //       onDelete();
+    //     },
+    //   },
+    // ]);
+
+    setShowModal(true);
+    Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
+  };
+
+  return (
+    <TouchableOpacity style={styles.container} onLongPress={handleLongPress}>
+      <Text style={styles.name}>{name}</Text>
+      <Text style={styles.macros}>
+        {calories} cal • {protein}g P • {carbs}g C • {fat}g F
+      </Text>
+      <DeleteMealModal
+        visible={showModal}
+        onCancel={() => setShowModal(false)}
+        onConfirm={async () => {
+          await deleteMeal(id);
+          onDelete();
+          setShowModal(false);
+        }}
+      />
+    </TouchableOpacity>
+  );
+}
+
+const styles = StyleSheet.create({
+  container: {
+    backgroundColor: colors.surface,
+    borderRadius: 10,
+    padding: 16,
+    marginBottom: 10,
+  },
+  name: {
+    fontSize: 16,
+    fontWeight: "600",
+    color: colors.text,
+  },
+  macros: {
+    fontSize: 13,
+    color: colors.textSecondary,
+    marginTop: 4,
+  },
+});
